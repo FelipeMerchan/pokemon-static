@@ -21,7 +21,7 @@ export const Navbar = () => {
         height={70}
       />
       <Text color='white' h2>P</Text>
-      <Text color='white' h3>okemon</Text>
+      <Text color='white' h3>okémon</Text>
       <Spacer css={{ flex: 1 }}/>
       <Text color='white'>Favoritos</Text>
     </div>
