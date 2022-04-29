@@ -1,8 +1,10 @@
 import { NextPage, GetStaticProps } from 'next'
 import { pokeApi } from '../api'
+import { PokemonListResponse } from '../interfaces'
 import { Layout } from '../components/layouts'
 
 const HomePage: NextPage = (props) => {
+  console.log(props)
   return (
     <Layout title='Lista de Pokemon'>
       <ul>
@@ -22,11 +24,11 @@ const HomePage: NextPage = (props) => {
 servidor y solo se ejecuta en build time. Además, solo es posible usar este método
 de Next en los componentes páginas */
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { data } = await pokeApi.get('/pokemon?limit=151')
+  const { data } = await pokeApi.get<PokemonListResponse>('/pokemon?limit=151')
 
   return {
     props: {
-      pokemonList: data.results
+      pokemonList: data.results,
     }
   }
 }
