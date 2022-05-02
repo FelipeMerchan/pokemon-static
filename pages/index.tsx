@@ -9,6 +9,7 @@ interface Props {
 }
 
 const HomePage: NextPage<Props> = ({ pokemonList }) => {
+  console.log(pokemonList)
   return (
     <Layout title='Lista de Pokemon'>
       <PokemonList>
@@ -34,7 +35,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const pokemonList: SmallPokemon[] = data.results.map((pokemon, index) => ({
     ...pokemon,
     id: ++index,
-    img:  `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${++index}.svg`,
+    img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${index}.svg`,
   }))
 
   return {
