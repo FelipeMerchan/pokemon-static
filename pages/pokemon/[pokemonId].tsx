@@ -1,16 +1,34 @@
-import { Button, Card, Container, Grid, Image, Text } from '@nextui-org/react';
-import { NextPage, GetStaticProps, GetStaticPaths } from 'next';
-import { pokeApi } from '../../api';
+import { Button, Card, Container, Grid, Image, Text } from '@nextui-org/react'
+import { NextPage, GetStaticProps, GetStaticPaths } from 'next'
+import { pokeApi } from '../../api'
 import { Layout } from '../../components/layouts'
-import { Pokemon } from '../../interfaces';
+import { Pokemon } from '../../interfaces'
+import localFavorite from '../../utils/localFavorite'
 
 interface Props {
   pokemon: Pokemon;
 }
 
 const PokemonPage: NextPage<Props> = ({ pokemon }) => {
+  const name = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)
+
+  const onToggleFavorite = () => {
+    localFavorite.toggleFavorite(pokemon.id)
+  }
+
+  /* Esta parte que está en el ámbito del componente
+  se va a ejecutar del lado del servidor, por lo que no es
+  posible usar las web api's, como por ejemplo: */
+  /* console.log(localStorage.getItem('favorites')) */
+
+  /* En cambio si ejecutamos un useEffect sí vamos a tener
+  acceso a las web api's: */
+  /* useEffect(() => {
+    console.log(localStorage.getItem('favorites'))
+  }, [pokemon]) */
+
   return (
-    <Layout title='Algún Pokémon'>
+    <Layout title={name}>
       <Grid.Container css={{ marginTop: '5px' }} gap={2}>
         <Grid xs={12} sm={4}>
           <Card hoverable css={{ padding: '30px' }}>
@@ -33,6 +51,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
               <Button
                 color='gradient'
                 ghost
+                onClick={onToggleFavorite}
               >
                 Guardar en favoritos
               </Button>
