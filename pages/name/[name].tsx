@@ -5,7 +5,7 @@ import confetti from 'canvas-confetti'
 import { Layout } from '../../components/layouts'
 import { Pokemon, PokemonListResponse } from '../../interfaces'
 import { pokeApi } from '../../api'
-import { localFavorites } from '../../utils'
+import { getPokemonData, localFavorites } from '../../utils'
 
 interface Props {
   pokemon: Pokemon;
@@ -113,11 +113,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { name } = params as { name: string }
-  const { data: pokemon } = await pokeApi.get(`/pokemon/${name}`)
 
   return {
     props: {
-      pokemon,
+      pokemon: await getPokemonData(name),
     }
   }
 }

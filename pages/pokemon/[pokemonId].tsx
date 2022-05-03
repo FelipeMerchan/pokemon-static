@@ -7,7 +7,7 @@ import { pokeApi } from '../../api'
 import { Layout } from '../../components/layouts'
 import { Pokemon } from '../../interfaces'
 import localFavorite from '../../utils/localFavorite'
-import { localFavorites } from '../../utils'
+import { getPokemonData, localFavorites } from '../../utils'
 
 interface Props {
   pokemon: Pokemon;
@@ -130,11 +130,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 recibe por parámetro los paths que retorna getStaticPaths */
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { pokemonId } = params as { pokemonId: string }
-  const { data } = await pokeApi.get<Pokemon>(`/pokemon/${pokemonId}`)
 
   return {
     props: {
-      pokemon: data,
+      pokemon: await getPokemonData(pokemonId),
     }
   }
 }
