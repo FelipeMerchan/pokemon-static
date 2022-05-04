@@ -10,7 +10,7 @@ interface Props {
 
 const HomePage: NextPage<Props> = ({ pokemonList }) => {
   return (
-    <Layout title='Lista de Pokemon'>
+    <Layout title='Lista de Pokémon'>
       <PokemonList>
         {
           pokemonList.map(pokemon => (
