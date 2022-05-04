@@ -121,7 +121,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
     /* Indica que si la persona ingresa a una ruta dinámica que
     no se encuentre pre renderizado con getStaticPaht y getStaticProps saldrá un
     404 */
-    fallback: false
+    fallback: 'blocking'
+    /* blocking va a dejar pasar al getStaticProps (si estuviera en false
+      tendríamos una página de 404 si el usuario busca una página que no existe
+      y no pasaría al getStaticProps) */
   }
 }
 
@@ -130,9 +133,28 @@ recibe por parámetro los paths que retorna getStaticPaths */
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { pokemonId } = params as { pokemonId: string }
 
+  const pokemon = await getPokemonData(pokemonId)
+
+  if (!pokemon) {
+    return {
+      redirect: {
+        destination: '/',
+        /* permanent especifica si una redirección es permanente
+        o no lo es. Esto le ayuda a los bots de Google a saber
+        si logran encontrar que la redirección es permanente significa que
+        la redirección a otra página la van a borrar del índice porque
+        quiere decir que no existe y nunca más los usuarios van a ingresar allí.
+        En este caso se coloca permanent en false porque puede ser que a
+        futuro exista ese contenido, por ejemplo, que se añada un nuevo
+        Pokémon lo que haría que esa página exista */
+        permanent: false
+      }
+    }
+  }
+
   return {
     props: {
-      pokemon: await getPokemonData(pokemonId),
+      pokemon
     },
     revalidate: 86400,
   }
